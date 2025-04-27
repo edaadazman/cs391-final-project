@@ -1,9 +1,10 @@
 import './App.css'
+import ShootingListContent from './components/ShootingListContent'
 
 function App() {
   return (
     <>
-      <h1>CS391 Final Project</h1>
+      <ShootingListContent></ShootingListContent>
     </>
   )
 }
