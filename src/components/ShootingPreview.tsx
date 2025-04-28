@@ -3,17 +3,17 @@ import { Shooting } from '../../types';
 
 const PreviewCard = styled.div`
     border: 1px solid #ddd;
-    border-radius: 8px;
+    border-radius: 12px;
     padding: 16px;
     margin-bottom: 16px;
-    background-color: '#ffe6e6';
+    background-color: #f5f5f5;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
 const IncidentTitle = styled.h3`
     color: #333;
     margin-top: 0;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #333;
     padding-bottom: 8px;
 `;
 
