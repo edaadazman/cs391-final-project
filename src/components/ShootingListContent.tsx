@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Shooting } from "../../types";
 import ShootingPreview from "./ShootingPreview";
 import FilterBar from "./FilterBar";
+import ShootingTable from "./ShootingTable";
 
 const Layout = styled.div`
     display: flex;
@@ -44,8 +45,29 @@ const CardWrapper = styled.div`
     min-width: 300px;
 `;
 
+const ToggleWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-bottom: 20px;
+
+  button {
+    padding: 6px 12px;
+    border: 1px solid #888;
+    border-radius: 4px;
+    background: white;
+    cursor: pointer;
+
+    &:disabled {
+      background: #eee;
+      cursor: default;
+    }
+  }
+`;
+
 export default function ShootingListContent() {
     const [shootings, setShootings] = useState<Shooting[]>([]);
+    const [viewMode, setViewMode] = useState<'card' | 'table'>('card');
     const [selectedFilters, setSelectedFilters] = useState({
         year: "",
         district: "",
@@ -96,6 +118,8 @@ export default function ShootingListContent() {
         });
     };
 
+    const visible = filterShootings(shootings);
+
     return (
         <Layout>
             <SidebarWrapper>
@@ -107,15 +131,27 @@ export default function ShootingListContent() {
             </SidebarWrapper>
             <MainContent>
                 <Title>Boston Shooting Incidents</Title>
+
+                <ToggleWrapper>
+                <button onClick={() => setViewMode('card')} disabled={viewMode === 'card'}>
+                    Card View
+                </button>
+                <button onClick={() => setViewMode('table')} disabled={viewMode === 'table'}>
+                    Table View
+                </button>
+                </ToggleWrapper>
+
+                {viewMode === 'card' ? (
                 <CardGrid>
-                    {filterShootings(shootings).map((shooting) => (
-                        <CardWrapper key={shooting.attributes.OBJECTID}>
-                            <ShootingPreview
-                                shooting={shooting}
-                            />
-                        </CardWrapper>
+                    {visible.map(s => (
+                    <CardWrapper key={s.attributes.OBJECTID}>
+                        <ShootingPreview shooting={s} />
+                    </CardWrapper>
                     ))}
                 </CardGrid>
+                ) : (
+                <ShootingTable shootings={visible} />
+                )}
             </MainContent>
         </Layout>
     );
