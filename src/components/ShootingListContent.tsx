@@ -4,6 +4,7 @@ import { Shooting } from "../../types";
 import ShootingPreview from "./ShootingPreview";
 import FilterBar from "./FilterBar";
 import ShootingTable from "./ShootingTable";
+import ShootingGraph from "./ShootingGraph";
 
 const Layout = styled.div`
     display: flex;
@@ -57,6 +58,7 @@ const ToggleWrapper = styled.div`
     border-radius: 4px;
     background: white;
     cursor: pointer;
+    color: black;
 
     &:disabled {
       background: #eee;
@@ -65,9 +67,17 @@ const ToggleWrapper = styled.div`
   }
 `;
 
+const GraphWrapper = styled.div`
+  width: 100%;
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 100px;
+  padding-left: 0;
+`;
+
 export default function ShootingListContent() {
     const [shootings, setShootings] = useState<Shooting[]>([]);
-    const [viewMode, setViewMode] = useState<'card' | 'table'>('card');
+    const [viewMode, setViewMode] = useState<'card' | 'table' | 'graph'>('card');
     const [selectedFilters, setSelectedFilters] = useState({
         year: "",
         district: "",
@@ -133,24 +143,31 @@ export default function ShootingListContent() {
                 <Title>Boston Shooting Incidents</Title>
 
                 <ToggleWrapper>
-                <button onClick={() => setViewMode('card')} disabled={viewMode === 'card'}>
-                    Card View
-                </button>
-                <button onClick={() => setViewMode('table')} disabled={viewMode === 'table'}>
-                    Table View
-                </button>
+                    <button onClick={() => setViewMode('card')} disabled={viewMode === 'card'}>
+                        Card View
+                    </button>
+                    <button onClick={() => setViewMode('table')} disabled={viewMode === 'table'}>
+                        Table View
+                    </button>
+                    <button onClick={() => setViewMode('graph')} disabled={viewMode === 'graph'}>
+                        Graph View
+                    </button>
                 </ToggleWrapper>
 
                 {viewMode === 'card' ? (
-                <CardGrid>
-                    {visible.map(s => (
-                    <CardWrapper key={s.attributes.OBJECTID}>
-                        <ShootingPreview shooting={s} />
-                    </CardWrapper>
-                    ))}
-                </CardGrid>
+                    <CardGrid>
+                        {visible.map(s => (
+                            <CardWrapper key={s.attributes.OBJECTID}>
+                                <ShootingPreview shooting={s} />
+                            </CardWrapper>
+                        ))}
+                    </CardGrid>
+                ) : viewMode === 'table' ? (
+                    <ShootingTable shootings={visible} />
                 ) : (
-                <ShootingTable shootings={visible} />
+                    <GraphWrapper>
+                        <ShootingGraph shootings={visible} />
+                    </GraphWrapper>
                 )}
             </MainContent>
         </Layout>
