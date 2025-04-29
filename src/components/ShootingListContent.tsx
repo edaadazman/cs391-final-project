@@ -48,7 +48,7 @@ const CardWrapper = styled.div`
 
 const ToggleWrapper = styled.div`
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   gap: 10px;
   margin-bottom: 20px;
 
@@ -75,6 +75,36 @@ const GraphWrapper = styled.div`
   padding-left: 0;
 `;
 
+const PaginationWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  gap: 10px;
+  align-items: center;
+`;
+
+const PageButton = styled.button`
+  padding: 6px 12px;
+  border: 1px solid #888;
+  border-radius: 4px;
+  background: white;
+  cursor: pointer;
+
+  &:disabled {
+    background: #eee;
+    cursor: default;
+  }
+
+  &:hover:not(:disabled) {
+    background: #f0f0f0;
+  }
+`;
+
+const PageInfo = styled.div`
+  font-size: 0.9rem;
+  color: #555;
+`;
+
 export default function ShootingListContent() {
     const [shootings, setShootings] = useState<Shooting[]>([]);
     const [viewMode, setViewMode] = useState<'card' | 'table' | 'graph'>('card');
@@ -88,15 +118,27 @@ export default function ShootingListContent() {
         multiVictim: false
     });
 
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10;
+
     useEffect(() => {
         async function getShootings() {
             const res = await fetch(`https://services.arcgis.com/sFnw0xNflSi8J0uh/arcgis/rest/services/Person_Shot_Tbl_view/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=json`);
             const data = await res.json();
-            setShootings(data.features);
+
+            const sortedData = [...data.features].sort((a, b) =>
+                b.attributes.Shooting_Date - a.attributes.Shooting_Date
+            );
+
+            setShootings(sortedData);
         }
 
         getShootings();
     }, []);
+
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [selectedFilters, viewMode]);
 
     const handleFilterChange = (key: string, value: string | boolean) => {
         setSelectedFilters(prev => ({ ...prev, [key]: value }));
@@ -130,6 +172,27 @@ export default function ShootingListContent() {
 
     const visible = filterShootings(shootings);
 
+    const totalPages = Math.ceil(visible.length / itemsPerPage);
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = Math.min(startIndex + itemsPerPage, visible.length);
+    const currentItems = visible.slice(startIndex, endIndex);
+
+    const handleNextPage = () => {
+        setCurrentPage(prev => Math.min(prev + 1, totalPages));
+    };
+
+    const handlePrevPage = () => {
+        setCurrentPage(prev => Math.max(prev - 1, 1));
+    };
+
+    const handleFirstPage = () => {
+        setCurrentPage(1);
+    };
+
+    const handleLastPage = () => {
+        setCurrentPage(totalPages);
+    };
+
     return (
         <Layout>
             <SidebarWrapper>
@@ -154,20 +217,44 @@ export default function ShootingListContent() {
                     </button>
                 </ToggleWrapper>
 
+                {viewMode !== 'graph' && visible.length > 0 && (
+                    <PageInfo>
+                        Showing {startIndex + 1}-{endIndex} of {visible.length} results
+                    </PageInfo>
+                )}
+
                 {viewMode === 'card' ? (
                     <CardGrid>
-                        {visible.map(s => (
+                        {currentItems.map(s => (
                             <CardWrapper key={s.attributes.OBJECTID}>
                                 <ShootingPreview shooting={s} />
                             </CardWrapper>
                         ))}
                     </CardGrid>
                 ) : viewMode === 'table' ? (
-                    <ShootingTable shootings={visible} />
+                    <ShootingTable shootings={currentItems} />
                 ) : (
                     <GraphWrapper>
                         <ShootingGraph shootings={visible} />
                     </GraphWrapper>
+                )}
+
+                {viewMode !== 'graph' && totalPages > 1 && (
+                    <PaginationWrapper>
+                        <PageButton onClick={handleFirstPage} disabled={currentPage === 1}>
+                            &laquo; First
+                        </PageButton>
+                        <PageButton onClick={handlePrevPage} disabled={currentPage === 1}>
+                            &lsaquo; Previous
+                        </PageButton>
+                        <span>Page {currentPage} of {totalPages}</span>
+                        <PageButton onClick={handleNextPage} disabled={currentPage === totalPages}>
+                            Next &rsaquo;
+                        </PageButton>
+                        <PageButton onClick={handleLastPage} disabled={currentPage === totalPages}>
+                            Last &raquo;
+                        </PageButton>
+                    </PaginationWrapper>
                 )}
             </MainContent>
         </Layout>
