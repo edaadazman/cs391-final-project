@@ -11,9 +11,7 @@ export default function NeighborhoodMap({ onNeighborhoodSelect }: Props) {
 
     useEffect(() => {
         fetch(
-            'https://gis.bostonplans.org/hosting/rest/services/Hosted/' +
-            'Boston_Neighborhood_Boundaries/FeatureServer/1/query?' +
-            'where=1=1&outFields=name&outSR=4326&f=geojson'
+            'https://gis.bostonplans.org/hosting/rest/services/Hosted/Boston_Neighborhood_Boundaries/FeatureServer/1/query?where=1=1&outFields=name&outSR=4326&f=geojson'
         )
             .then(r => r.json())
             .then(setLayerData);
