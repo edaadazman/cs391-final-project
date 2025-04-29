@@ -109,7 +109,7 @@ export default function ShootingListContent() {
     const [shootings, setShootings] = useState<Shooting[]>([]);
     const [viewMode, setViewMode] = useState<'card' | 'table' | 'graph'>('card');
     const [selectedFilters, setSelectedFilters] = useState({
-        year: "",
+        year: [] as string[],
         district: "",
         neighborhood: "",
         shootingType: "",
@@ -140,13 +140,13 @@ export default function ShootingListContent() {
         setCurrentPage(1);
     }, [selectedFilters, viewMode]);
 
-    const handleFilterChange = (key: string, value: string | boolean) => {
+    const handleFilterChange = (key: string, value: string[] | string | boolean) => {
         setSelectedFilters(prev => ({ ...prev, [key]: value }));
     };
 
     const handleClearFilters = () => {
         setSelectedFilters({
-            year: "",
+            year: [],
             district: "",
             neighborhood: "",
             shootingType: "",
@@ -159,7 +159,7 @@ export default function ShootingListContent() {
     const filterShootings = (shootings: Shooting[]) => {
         return shootings.filter(shooting => {
             const attrs = shooting.attributes;
-            if (selectedFilters.year && attrs.YEAR.toString() !== selectedFilters.year) return false;
+            if (selectedFilters.year.length > 0 && !selectedFilters.year.includes(attrs.YEAR.toString())) return false;
             if (selectedFilters.district && attrs.District !== selectedFilters.district) return false;
             if (selectedFilters.neighborhood && attrs.NEIGHBORHOOD !== selectedFilters.neighborhood) return false;
             if (selectedFilters.shootingType && attrs.Shooting_Type_V2 !== selectedFilters.shootingType) return false;
