@@ -7,63 +7,84 @@ import ShootingTable from "./ShootingTable";
 import ShootingGraph from "./ShootingGraph";
 
 const Layout = styled.div`
-    display: flex;
-    flex-direction: row;
-    max-width: 1200px;
-    margin: 0 auto;
-    min-height: 80vh;
-    padding-top: 30px;
+  display: flex;
+  flex-direction: row;
+  margin: 0 auto;
+  min-height: 80vh;
+  padding-top: 30px;
+  gap: 30px;
 `;
 
 const SidebarWrapper = styled.div`
-    flex: 0 0 auto;
+  flex: 0 0 auto;
+  position: sticky;
+  top: 30px;
+  align-self: flex-start;
 `;
 
 const MainContent = styled.div`
-    flex: 1 1 0%;
-    padding: 0 20px 20px 20px;
-    display: flex;
-    flex-direction: column;
+  flex: 1 1 0%;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  background-color: #1e1e1e;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 `;
 
 const Title = styled.h2`
-    color: #333;
-    text-align: center;
-    margin-bottom: 30px;
-    font-size: 2rem;
+  color: #bb86fc;
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 2.2rem;
+  font-weight: 600;
+  position: relative;
+  padding-bottom: 15px;
 `;
 
 const CardGrid = styled.div`
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px;
+  justify-content: center;
 `;
 
 const CardWrapper = styled.div`
-    flex: 0 0 300px;
-    max-width: 400px;
-    min-width: 300px;
+  flex: 0 0 300px;
+  max-width: 400px;
+  min-width: 300px;
+  transition: transform 0.2s ease;
+  
+  &:hover {
+    transform: translateY(-5px);
+  }
 `;
 
 const ToggleWrapper = styled.div`
   display: flex;
   justify-content: center;
-  gap: 10px;
-  margin-bottom: 20px;
+  gap: 12px;
+  margin-bottom: 30px;
+`;
 
-  button {
-    padding: 6px 12px;
-    border: 1px solid #888;
-    border-radius: 4px;
-    background: white;
-    cursor: pointer;
-    color: black;
+const ViewToggleButton = styled.button<{ isActive: boolean }>`
+  padding: 8px 18px;
+  border: none;
+  border-radius: 8px;
+  background-color: ${props => props.isActive ? '#bb86fc' : 'rgba(255, 255, 255, 0.08)'};
+  color: ${props => props.isActive ? '#121212' : '#e0e0e0'};
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  box-shadow: ${props => props.isActive ? '0 2px 4px rgba(0, 0, 0, 0.4)' : 'none'};
 
-    &:disabled {
-      background: #eee;
-      cursor: default;
-    }
+  &:hover {
+    background-color: ${props => props.isActive ? '#bb86fc' : 'rgba(255, 255, 255, 0.15)'};
+  }
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: default;
   }
 `;
 
@@ -71,38 +92,50 @@ const GraphWrapper = styled.div`
   width: 100%;
   max-width: 1500px;
   margin: 0 auto;
-  padding: 100px;
-  padding-left: 0;
+  padding: 40px 0;
+  background-color: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
 `;
 
 const PaginationWrapper = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 20px;
+  margin-top: 30px;
   gap: 10px;
   align-items: center;
+  padding: 15px 0;
+  background-color: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
 `;
 
-const PageButton = styled.button`
-  padding: 6px 12px;
-  border: 1px solid #888;
+const PageButton = styled.button<{ variant?: 'primary' | 'secondary' }>`
+  padding: 8px 14px;
+  border: none;
   border-radius: 4px;
-  background: white;
+  background-color: ${props => props.variant === 'primary' ? '#bb86fc' : 'rgba(255, 255, 255, 0.08)'};
+  color: ${props => props.variant === 'primary' ? '#121212' : '#e0e0e0'};
   cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
 
   &:disabled {
-    background: #eee;
-    cursor: default;
+    opacity: 0.5;
   }
 
-  &:hover:not(:disabled) {
-    background: #f0f0f0;
+  &:hover{
+    background-color: ${props => props.variant === 'primary' ? '#bb86fc' : 'rgba(255, 255, 255, 0.15)'};
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
   }
 `;
 
 const PageInfo = styled.div`
   font-size: 0.9rem;
-  color: #555;
+  color: #a0a0a0;
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 8px 15px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  text-align: center;
 `;
 
 export default function ShootingListContent() {
@@ -123,14 +156,18 @@ export default function ShootingListContent() {
 
     useEffect(() => {
         async function getShootings() {
-            const res = await fetch(`https://services.arcgis.com/sFnw0xNflSi8J0uh/arcgis/rest/services/Person_Shot_Tbl_view/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=json`);
-            const data = await res.json();
+            try {
+                const res = await fetch(`https://services.arcgis.com/sFnw0xNflSi8J0uh/arcgis/rest/services/Person_Shot_Tbl_view/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=json`);
+                const data = await res.json();
 
-            const sortedData = [...data.features].sort((a, b) =>
-                b.attributes.Shooting_Date - a.attributes.Shooting_Date
-            );
+                const sortedData = [...data.features].sort((a, b) =>
+                    b.attributes.Shooting_Date - a.attributes.Shooting_Date
+                );
 
-            setShootings(sortedData);
+                setShootings(sortedData);
+            } catch (err) {
+                console.log(err)
+            }
         }
 
         getShootings();
@@ -206,15 +243,24 @@ export default function ShootingListContent() {
                 <Title>Boston Shooting Incidents</Title>
 
                 <ToggleWrapper>
-                    <button onClick={() => setViewMode('card')} disabled={viewMode === 'card'}>
+                    <ViewToggleButton
+                        onClick={() => setViewMode('card')}
+                        isActive={viewMode === 'card'}
+                    >
                         Card View
-                    </button>
-                    <button onClick={() => setViewMode('table')} disabled={viewMode === 'table'}>
+                    </ViewToggleButton>
+                    <ViewToggleButton
+                        onClick={() => setViewMode('table')}
+                        isActive={viewMode === 'table'}
+                    >
                         Table View
-                    </button>
-                    <button onClick={() => setViewMode('graph')} disabled={viewMode === 'graph'}>
+                    </ViewToggleButton>
+                    <ViewToggleButton
+                        onClick={() => setViewMode('graph')}
+                        isActive={viewMode === 'graph'}
+                    >
                         Graph View
-                    </button>
+                    </ViewToggleButton>
                 </ToggleWrapper>
 
                 {viewMode !== 'graph' && visible.length > 0 && (
@@ -242,17 +288,17 @@ export default function ShootingListContent() {
                 {viewMode !== 'graph' && totalPages > 1 && (
                     <PaginationWrapper>
                         <PageButton onClick={handleFirstPage} disabled={currentPage === 1}>
-                            &laquo; First
+                            &lt;&lt; First
                         </PageButton>
                         <PageButton onClick={handlePrevPage} disabled={currentPage === 1}>
-                            &lsaquo; Previous
+                            &lt; Previous
                         </PageButton>
                         <span>Page {currentPage} of {totalPages}</span>
                         <PageButton onClick={handleNextPage} disabled={currentPage === totalPages}>
-                            Next &rsaquo;
+                            Next &gt;
                         </PageButton>
                         <PageButton onClick={handleLastPage} disabled={currentPage === totalPages}>
-                            Last &raquo;
+                            Last &gt;&gt;
                         </PageButton>
                     </PaginationWrapper>
                 )}

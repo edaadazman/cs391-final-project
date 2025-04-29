@@ -7,19 +7,19 @@ const SidebarContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 400px;
-  background-color: #f5f5f5;
+  background-color: #1e1e1e;
   padding: 20px 16px 16px 16px;
   box-sizing: border-box;
   height: 100%;
   border-radius: 12px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 `;
 
 const SidebarTitle = styled.h3`
   font-size: 1.3rem;
   font-weight: 600;
   margin-bottom: 18px;
-  color: #222;
+  color: #bb86fc;
   letter-spacing: 0.5px;
 `;
 
@@ -32,33 +32,44 @@ const FilterGroup = styled.div`
 const Label = styled.label`
   font-size: 0.95rem;
   margin-bottom: 5px;
-  color: #222;
+  color: #e0e0e0;
 `;
 
 const Select = styled.select`
-  padding: 5px;
-  border: 1px solid #ccc;
+  padding: 8px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 4px;
-  background: #fff;
-  color: #222;
+  background: #2d2d2d;
+  color: #e0e0e0;
+  font-size: 0.9rem;
+  outline: none;
+  
+  &:focus {
+    border-color: #bb86fc;
+  }
+  
+  option {
+    background-color: #2d2d2d;
+  }
 `;
 
 const CheckboxContainer = styled.div`
   display: flex;
   align-items: center;
-  margin-top: 5px;
+  margin-top: 8px;
 `;
 
 const Checkbox = styled.input`
-  margin-right: 5px;
-  accent-color: #f44336;
+  margin-right: 8px;
+  accent-color: #bb86fc;
+  cursor: pointer;
 `;
 
 const MapWrapper = styled.div`
   height: 250px;
   width: 100%;
-  margin-top: 5px;
-  border: 1px solid #ccc;
+  margin-top: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 4px;
   overflow: hidden;
 `;
@@ -66,27 +77,39 @@ const MapWrapper = styled.div`
 const ButtonRow = styled.div`
   display: flex;
   gap: 10px;
-  margin-top: 10px;
+  margin-top: 20px;
 `;
 
 const ApplyButton = styled.button`
-  padding: 7px 12px;
-  background-color: #1976d2;
-  color: white;
+  padding: 8px 14px;
+  background-color: #bb86fc;
+  color: #121212;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   font-weight: 500;
+  transition: background-color 0.2s;
+  
+  &:hover {
+    background-color: #c7a1fc;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  }
 `;
 
 const ClearButton = styled.button`
-  padding: 7px 12px;
-  background-color: #f44336;
-  color: white;
+  padding: 8px 14px;
+  background-color: #cf6679;
+  color: #121212;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   font-weight: 500;
+  transition: background-color 0.2s;
+  
+  &:hover {
+    background-color: #d97e8e;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  }
 `;
 
 interface FilterBarProps {
@@ -176,7 +199,7 @@ export default function FilterBar({ shootings, onChange, onClear }: FilterBarPro
         <MapWrapper>
           <NeighborhoodMap onNeighborhoodSelect={(name) => setNeighborhood(name)} />
         </MapWrapper>
-        {neighborhood && <small style={{ marginTop: '4px' }}>Selected: {neighborhood}</small>}
+        {neighborhood && <div style={{ marginTop: '8px', fontSize: '0.9rem', color: '#bb86fc' }}>Selected: {neighborhood}</div>}
       </FilterGroup>
       <FilterGroup>
         <Label>Shooting Type</Label>

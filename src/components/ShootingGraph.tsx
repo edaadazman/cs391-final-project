@@ -9,14 +9,12 @@ interface DataChartProps {
 }
 
 export default function DataChart({ shootings }: DataChartProps) {
-  // Aggregate data for the chart (e.g., number of incidents per year)
   const incidentsPerYear = shootings.reduce((acc, shooting) => {
     const year = shooting.attributes.YEAR;
     acc[year] = (acc[year] || 0) + 1;
     return acc;
   }, {} as Record<number, number>);
 
-  // Prepare data for the chart
   const data = {
     labels: Object.keys(incidentsPerYear).sort((a, b) => Number(a) - Number(b)),
     datasets: [

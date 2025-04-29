@@ -6,42 +6,70 @@ interface ShootingTableProps {
 }
 
 const TableWrapper = styled.div`
-  overflow-x: auto;
   margin-top: 20px;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.03);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  width: 100%;
+  max-width: 100%; 
 `;
 
 const Table = styled.table`
   width: 100%;
-  border-collapse: collapse;
-  min-width: 800px;
+  table-layout: fixed; 
 `;
 
 const THead = styled.thead`
-  background-color: #f5f5f5;
+  background-color: rgba(255, 255, 255, 0.05);
 `;
 
 const TH = styled.th`
   text-align: left;
-  padding: 12px 8px;
-  border-bottom: 2px solid #ddd;
+  padding: 14px 12px;
   font-weight: 600;
-  color: #333;
+  color: #bb86fc;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.9rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
-const TR = styled.tr`
-  &:nth-child(even) {
-    background-color: #fafafa;
-  }
+const TR = styled.tr<{ isFatal?: boolean }>`
+  background-color: ${props => props.isFatal
+    ? 'rgba(207, 102, 121, 0.1)'
+    : 'transparent'};
+  
   &:hover {
-    background-color: gold;
+    background-color: rgba(187, 134, 252, 0.1);
   }
 `;
 
 const TD = styled.td`
-  padding: 10px 8px;
-  border-bottom: 1px solid #eee;
-  color: #555;
+  padding: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: #e0e0e0;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; 
 `;
+
+const TypeTag = styled.span<{ isFatal: boolean }>`
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background-color: ${props => props.isFatal
+    ? '#cf6679'
+    : '#03dac6'};
+  color: #121212;
+  font-size: 0.7rem;
+  font-weight: 600;
+`;
+
+const formatDate = (timestamp: number) => {
+  return new Date(timestamp).toLocaleDateString();
+};
 
 export default function ShootingTable({ shootings }: ShootingTableProps) {
   return (
@@ -49,33 +77,36 @@ export default function ShootingTable({ shootings }: ShootingTableProps) {
       <Table>
         <THead>
           <TR>
-            <TH>Incident #</TH>
-            <TH>Date</TH>
-            <TH>Type</TH>
-            <TH>District</TH>
-            <TH>Neighborhood</TH>
-            <TH>Gender</TH>
-            <TH>Race</TH>
-            <TH>Year</TH>
-            <TH>Day</TH>
-            <TH>Hour</TH>
+            <TH style={{ width: '12%' }}>Incident #</TH>
+            <TH style={{ width: '12%' }}>Date</TH>
+            <TH style={{ width: '10%' }}>Type</TH>
+            <TH style={{ width: '10%' }}>District</TH>
+            <TH style={{ width: '15%' }}>Neighborhood</TH>
+            <TH style={{ width: '10%' }}>Gender</TH>
+            <TH style={{ width: '15%' }}>Race</TH>
+            <TH style={{ width: '6%' }}>Year</TH>
+            <TH style={{ width: '10%' }}>Day</TH>
           </TR>
         </THead>
         <tbody>
           {shootings.map(s => {
             const a = s.attributes;
+            const isFatal = a.Shooting_Type_V2 === "Fatal";
             return (
-              <TR key={a.OBJECTID}>
+              <TR key={a.OBJECTID} isFatal={isFatal}>
                 <TD>{a.Incident_Num}</TD>
-                <TD>{new Date(a.Shooting_Date).toLocaleDateString()}</TD>
-                <TD>{a.Shooting_Type_V2}</TD>
+                <TD>{formatDate(a.Shooting_Date)}</TD>
+                <TD>
+                  <TypeTag isFatal={isFatal}>
+                    {a.Shooting_Type_V2}
+                  </TypeTag>
+                </TD>
                 <TD>{a.District}</TD>
                 <TD>{a.NEIGHBORHOOD}</TD>
                 <TD>{a.Victim_Gender}</TD>
                 <TD>{a.Victim_Race}</TD>
                 <TD>{a.YEAR}</TD>
                 <TD>{a.DAY_OF_WEEK}</TD>
-                <TD>{a.HOUR_OF_DAY}:00</TD>
               </TR>
             );
           })}
