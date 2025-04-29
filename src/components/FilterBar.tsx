@@ -91,17 +91,23 @@ const ClearButton = styled.button`
 
 interface FilterBarProps {
   shootings: Shooting[];
-  onChange: (key: string, value: string | boolean) => void;
+  onChange: (key: string, value: string[] | string | boolean) => void;
   onClear: () => void;
 }
 
 export default function FilterBar({ shootings, onChange, onClear }: FilterBarProps) {
   const years = [...new Set(shootings.map(s => s.attributes.YEAR.toString()))].sort((a, b) => Number(b) - Number(a));
-  const shootingTypes = [...new Set(shootings.map(s => s.attributes.Shooting_Type_V2))].filter(Boolean).sort();
-  const victimGenders = [...new Set(shootings.map(s => s.attributes.Victim_Gender))].filter(Boolean).sort();
-  const victimRaces = [...new Set(shootings.map(s => s.attributes.Victim_Race))].filter(Boolean).sort();
+  const shootingTypes = ["Fatal", "Non-Fatal"];
+  const victimGenders = ["Male", "Female", "Unknown"];
+  const victimRaces = [
+    "Asian",
+    "Black or African American",
+    "White",
+    "Unknown",
+    // Add others as needed
+  ];
 
-  const [year, setYear] = useState("");
+  const [year, setYear] = useState<string[]>([]);
   const [neighborhood, setNeighborhood] = useState("");
   const [shootingType, setShootingType] = useState("");
   const [victimGender, setVictimGender] = useState("");
@@ -118,7 +124,7 @@ export default function FilterBar({ shootings, onChange, onClear }: FilterBarPro
   };
 
   const handleClearFilters = () => {
-    setYear("");
+    setYear([]);
     setNeighborhood("");
     setShootingType("");
     setVictimGender("");
@@ -132,12 +138,38 @@ export default function FilterBar({ shootings, onChange, onClear }: FilterBarPro
       <SidebarTitle>Filter Incidents</SidebarTitle>
       <FilterGroup>
         <Label>Year</Label>
-        <Select value={year} onChange={(e) => setYear(e.target.value)}>
-          <option value="">All Years</option>
-          {years.map(year => (
-            <option key={year} value={year}>{year}</option>
+        <div>
+          <CheckboxContainer>
+            <Checkbox
+              type="checkbox"
+              checked={year.length === 0 || year.length === years.length}
+              onChange={e => {
+                if (e.target.checked) {
+                  setYear([...years]);
+                } else {
+                  setYear([]);
+                }
+              }}
+            />
+            <span>All Years</span>
+          </CheckboxContainer>
+          {years.map(y => (
+            <CheckboxContainer key={y}>
+              <Checkbox
+                type="checkbox"
+                checked={year.includes(y)}
+                onChange={e => {
+                  if (e.target.checked) {
+                    setYear(prev => [...prev, y]);
+                  } else {
+                    setYear(prev => prev.filter(val => val !== y));
+                  }
+                }}
+              />
+              <span>{y}</span>
+            </CheckboxContainer>
           ))}
-        </Select>
+        </div>
       </FilterGroup>
       <FilterGroup>
         <Label>Neighborhood</Label>
