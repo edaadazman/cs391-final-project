@@ -3,40 +3,40 @@ import styled from 'styled-components';
 import { Shooting } from '../../types';
 
 // accepts isFatal prop to determine card color
-const PreviewCard = styled.div<{ isFatal: boolean }>` 
+const PreviewCard = styled.div<{ isFatal: boolean }>`
     border: none;
-    border-radius: 12px;
-    padding: 20px;
+    border-radius: 0.75rem;
+    padding: 1.25rem;
     background-color: ${props => props.isFatal
         ? 'rgba(207, 102, 121, 0.15)'
         : 'rgba(3, 218, 198, 0.08)'};
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.5);
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
     color: rgb(224, 224, 224);
-    height: 320px;
+    height: 20rem;
     display: flex;
     flex-direction: column;
     
     &:hover {
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.6);
     }
 `;
 
 const IncidentTitle = styled.h3`
     color: rgb(224, 224, 224);
     margin-top: 0;
-    padding-bottom: 12px;
+    padding-bottom: 0.75rem;
     font-size: 1.2rem;
     font-weight: 600;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 0.063rem solid rgba(255, 255, 255, 0.1);
 `;
 
 const InfoSection = styled.div`
     display: grid;
-    gap: 10px;
-    margin-top: 16px;
+    gap: 0.625rem;
+    margin-top: 1rem;
     flex: 1; 
 `;
 
@@ -45,7 +45,7 @@ const InfoItem = styled.div`
     strong {
         color: rgb(187, 134, 252);
         font-weight: 500;
-        margin-right: 5px;
+        margin-right: 0.3125rem;
     }
 `;
 
@@ -54,16 +54,16 @@ const CardFooter = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-top: 16px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    min-height: 40px; 
+    padding-top: 1rem;
+    border-top: 0.063rem solid rgba(255, 255, 255, 0.1);
+    min-height: 2.5rem; 
 `;
 
 const MultiVictimTag = styled.div`
     background-color: rgb(207, 102, 121);
     color: rgb(18, 18, 18);
-    padding: 4px 10px;
-    border-radius: 4px;
+    padding: 0.25rem 0.63rem;
+    border-radius: 0.25rem;
     display: inline-block;
     font-weight: 600;
     font-size: 0.8rem;
@@ -75,12 +75,11 @@ const TypeTag = styled.div<{ isFatal: boolean }>`
         ? 'rgb(207, 102, 121)'
         : 'rgb(3, 218, 198)'};
     color: rgb(18, 18, 18);
-    padding: 4px 8px;
+    padding: 0.25rem 0.5rem;
     font-size: 0.8rem;
     font-weight: 600;
-    border-radius: 4px;
-    letter-spacing: 0.5px;
-    margin-left: auto; /* Push to right side */
+    border-radius: 0.25rem;
+    margin-left: auto;
 `;
 
 interface ShootingPreviewProps {

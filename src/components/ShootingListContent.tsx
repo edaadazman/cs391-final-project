@@ -14,106 +14,106 @@ const Layout = styled.div`
     flex-direction: row;
     margin: 0 auto;
     min-height: 80vh;
-    padding-top: 30px;
-    gap: 30px;
+    padding-top: 1.85rem;
+    gap: 1.85rem;
 `;
 
 const SidebarWrapper = styled.div`
     flex: 0 0 auto;
     position: sticky;
-    top: 30px;
+    top: 1.85rem;
     align-self: flex-start;
 `;
 
 const MainContent = styled.div`
     flex: 1 1 0%;
-    padding: 25px;
+    padding: 1.55rem;
     display: flex;
     flex-direction: column;
     background-color: rgb(30, 30, 30);
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    border-radius: 0.75rem;
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.5);
 `;
 
 const Title = styled.h2`
     color: rgb(187, 134, 252);
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 1.85rem;
     font-size: 2.2rem;
     font-weight: 600;
     position: relative;
-    padding-bottom: 15px;
+    padding-bottom: 0.9375rem;
 `;
 
 const CardGrid = styled.div`
     display: flex;
     flex-wrap: wrap;
-    gap: 25px;
+    gap: 1.55rem;
     justify-content: center;
 `;
 
 const CardWrapper = styled.div`
-    flex: 0 0 300px;
-    max-width: 400px;
-    min-width: 300px;
+    flex: 0 0 18.75rem;
+    max-width: 25rem;
+    min-width: 18.75rem;
     transition: transform 0.2s ease;
 
     &:hover {
-    transform: translateY(-5px);
+        transform: translateY(-0.3125rem);
     }
 `;
 
 const ToggleWrapper = styled.div`
     display: flex;
     justify-content: center;
-    gap: 12px;
-    margin-bottom: 30px;
+    gap: 0.75rem;
+    margin-bottom: 1.85rem;
 `;
 
 const ViewToggleButton = styled.button<{ isActive: boolean }>`
-    padding: 8px 18px;
+    padding: 0.5rem 1.12rem;
     border: none;
-    border-radius: 8px;
+    border-radius: 0.5rem;
     background-color: ${props => props.isActive ? 'rgb(187, 134, 252)' : 'rgba(255, 255, 255, 0.08)'};
     color: ${props => props.isActive ? 'rgb(18, 18, 18)' : 'rgb(224, 224, 224)'};
     cursor: pointer;
     font-weight: 500;
     transition: all 0.2s ease;
-    box-shadow: ${props => props.isActive ? '0 2px 4px rgba(0, 0, 0, 0.4)' : 'none'};
+    box-shadow: ${props => props.isActive ? '0 0.12rem 0.25rem rgba(0, 0, 0, 0.4)' : 'none'};
 
     &:hover {
-    background-color: ${props => props.isActive ? 'rgb(187, 134, 252)' : 'rgba(255, 255, 255, 0.15)'};
+        background-color: ${props => props.isActive ? 'rgb(187, 134, 252)' : 'rgba(255, 255, 255, 0.15)'};
     }
 
     &:disabled {
-    opacity: 0.7;
+        opacity: 0.7;
     }
 `;
 
 const GraphWrapper = styled.div`
     width: 100%;
-    max-width: 1500px;
+    max-width: 93.75rem;
     margin: 0 auto;
-    padding: 40px 0;
+    padding: 2.5rem 0;
     background-color: rgba(255, 255, 255, 0.03);
-    border-radius: 8px;
+    border-radius: 0.5rem;
 `;
 
 const PaginationWrapper = styled.div`
     display: flex;
     justify-content: center;
-    margin-top: 30px;
-    gap: 10px;
+    margin-top: 1.85rem;
+    gap: 0.63rem;
     align-items: center;
-    padding: 15px 0;
+    padding: 0.94rem 0;
     background-color: rgba(255, 255, 255, 0.03);
-    border-radius: 8px;
+    border-radius: 0.5rem;
 `;
 
 const PageButton = styled.button<{ variant?: 'primary' | 'secondary' }>`
-    padding: 8px 14px;
+    padding: 0.5rem 0.875rem;
     border: none;
-    border-radius: 4px;
+    border-radius: 0.25rem;
     background-color: ${props => props.variant === 'primary' ? 'rgb(187, 134, 252)' : 'rgba(255, 255, 255, 0.08)'};
     color: ${props => props.variant === 'primary' ? 'rgb(18, 18, 18)' : 'rgb(224, 224, 224)'};
     cursor: pointer;
@@ -121,12 +121,12 @@ const PageButton = styled.button<{ variant?: 'primary' | 'secondary' }>`
     transition: all 0.2s ease;
 
     &:disabled {
-    opacity: 0.5;
+        opacity: 0.5;
     }
 
     &:hover{
-    background-color: ${props => props.variant === 'primary' ? 'rgb(187, 134, 252)' : 'rgba(255, 255, 255, 0.15)'};
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+        background-color: ${props => props.variant === 'primary' ? 'rgb(187, 134, 252)' : 'rgba(255, 255, 255, 0.15)'};
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.4);
     }
 `;
 
@@ -134,9 +134,9 @@ const PageInfo = styled.div`
     font-size: 0.9rem;
     color: rgb(160, 160, 160);
     background-color: rgba(255, 255, 255, 0.05);
-    padding: 8px 15px;
-    border-radius: 4px;
-    margin-bottom: 20px;
+    padding: 0.5rem 0.94rem;
+    border-radius: 0.25rem;
+    margin-bottom: 1.25rem;
     text-align: center;
 `;
 
@@ -242,7 +242,7 @@ export default function ShootingListContent() {
             <SidebarWrapper>
                 <FilterBar
                     // pass in shootings, handleFilterChange, and handleClearFilters
-                    shootings={shootings} 
+                    shootings={shootings}
                     onChange={handleFilterChange}
                     onClear={handleClearFilters}
                 />

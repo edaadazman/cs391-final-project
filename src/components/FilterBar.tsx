@@ -1,4 +1,4 @@
-// This file was done by Saksham Goel
+// This component was implemented by Saksham Goel
 import styled from 'styled-components';
 import { useState } from 'react';
 import { Shooting } from '../../types';
