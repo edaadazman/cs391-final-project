@@ -1,5 +1,6 @@
 // This component was implemented by Edaad Azman (except for filtering logic)
 // Filtering logic was impelemented by Saksham Goel
+// View mode button was implemented by Winson Dong
 import { useState, useEffect } from "react";
 import styled from 'styled-components';
 import { Shooting } from "../../types";

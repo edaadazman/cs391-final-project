@@ -1,3 +1,4 @@
+// This component was implemented by Winson Dong
 import styled from 'styled-components';
 import { Shooting } from '../../types';
 
