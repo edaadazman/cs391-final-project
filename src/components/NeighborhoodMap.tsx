@@ -1,3 +1,5 @@
+// This component, and the corresponding usage in FilterBar, was created by Sadid Ethun
+
 import React, { useEffect } from 'react';
 import { MapContainer, TileLayer, GeoJSON } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
