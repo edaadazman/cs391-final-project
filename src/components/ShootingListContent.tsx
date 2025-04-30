@@ -197,7 +197,7 @@ export default function ShootingListContent() {
             multiVictim: false
         });
     };
-
+    // Filtering logic: filters shootings based on selected attributes
     const filterShootings = (shootings: Shooting[]) => {
         return shootings.filter(shooting => {
             const attrs = shooting.attributes;
@@ -211,7 +211,7 @@ export default function ShootingListContent() {
             return true;
         });
     };
-
+    // Filtering shootings are then stored in visible
     const visible = filterShootings(shootings);
 
     // Pagination logic
@@ -240,7 +240,8 @@ export default function ShootingListContent() {
         <Layout>
             <SidebarWrapper>
                 <FilterBar
-                    shootings={shootings}
+                    // pass in shootings, handleFilterChange, and handleClearFilters
+                    shootings={shootings} 
                     onChange={handleFilterChange}
                     onClear={handleClearFilters}
                 />
