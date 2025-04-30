@@ -1,12 +1,13 @@
+// Styling and structure implemented by Edaad Azman
 import styled from 'styled-components';
 import ShootingListContent from './components/ShootingListContent';
 
 const AppContainer = styled.div`
   min-height: 100vh;
   width: 100%;
-  background-color: #121212;
+  background-color: rgb(18, 18, 18);
   padding: 20px;
-  color: #e0e0e0;
+  color: rgb(224, 224, 224);
   box-sizing: border-box;
 `;
 
@@ -16,7 +17,7 @@ const Header = styled.header`
 `;
 
 const Title = styled.h1`
-  color: #e0e0e0;
+  color: rgb(224, 224, 224);
   font-size: 2.5rem;
 `;
 

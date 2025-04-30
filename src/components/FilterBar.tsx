@@ -7,7 +7,7 @@ const SidebarContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 400px;
-  background-color: #1e1e1e;
+  background-color:rgb(30, 30, 30);
   padding: 20px 16px 16px 16px;
   box-sizing: border-box;
   height: 100%;
@@ -19,7 +19,7 @@ const SidebarTitle = styled.h3`
   font-size: 1.3rem;
   font-weight: 600;
   margin-bottom: 18px;
-  color: #bb86fc;
+  color:rgb(187, 134, 252);
   letter-spacing: 0.5px;
 `;
 
@@ -32,24 +32,24 @@ const FilterGroup = styled.div`
 const Label = styled.label`
   font-size: 0.95rem;
   margin-bottom: 5px;
-  color: #e0e0e0;
+  color:rgb(224, 224, 224);
 `;
 
 const Select = styled.select`
   padding: 8px 10px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 4px;
-  background: #2d2d2d;
-  color: #e0e0e0;
+  background:rgb(45, 45, 45);
+  color:rgb(224, 224, 224);
   font-size: 0.9rem;
   outline: none;
   
   &:focus {
-    border-color: #bb86fc;
+    border-color:rgb(187, 134, 252);
   }
   
   option {
-    background-color: #2d2d2d;
+    background-color:rgb(45, 45, 45);
   }
 `;
 
@@ -61,8 +61,7 @@ const CheckboxContainer = styled.div`
 
 const Checkbox = styled.input`
   margin-right: 8px;
-  accent-color: #bb86fc;
-  cursor: pointer;
+  accent-color:rgb(187, 134, 252);
 `;
 
 const MapWrapper = styled.div`
@@ -82,8 +81,8 @@ const ButtonRow = styled.div`
 
 const ApplyButton = styled.button`
   padding: 8px 14px;
-  background-color: #bb86fc;
-  color: #121212;
+  background-color:rgb(187, 134, 252);
+  color:rgb(18, 18, 18);
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -91,15 +90,15 @@ const ApplyButton = styled.button`
   transition: background-color 0.2s;
   
   &:hover {
-    background-color: #c7a1fc;
+    background-color:rgb(199, 161, 252);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
   }
 `;
 
 const ClearButton = styled.button`
   padding: 8px 14px;
-  background-color: #cf6679;
-  color: #121212;
+  background-color:rgb(207, 102, 121);
+  color:rgb(18, 18, 18);
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -107,7 +106,7 @@ const ClearButton = styled.button`
   transition: background-color 0.2s;
   
   &:hover {
-    background-color: #d97e8e;
+    background-color:rgb(217, 126, 142);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
   }
 `;
@@ -127,7 +126,6 @@ export default function FilterBar({ shootings, onChange, onClear }: FilterBarPro
     "Black or African American",
     "White",
     "Unknown",
-    // Add others as needed
   ];
 
   const [year, setYear] = useState<string[]>([]);

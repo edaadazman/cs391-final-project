@@ -1,3 +1,6 @@
+// This file was implemented by Edaad Azman
+
+// extracts the attributes of the data returned from the API
 export type Shooting = {
     attributes: {
         OBJECTID: number;

@@ -1,3 +1,5 @@
+// This component was implemented by Edaad Azman (except for filtering logic)
+// Filtering logic was impelemented by Saksham Goel
 import { useState, useEffect } from "react";
 import styled from 'styled-components';
 import { Shooting } from "../../types";
@@ -7,140 +9,139 @@ import ShootingTable from "./ShootingTable";
 import ShootingGraph from "./ShootingGraph";
 
 const Layout = styled.div`
-  display: flex;
-  flex-direction: row;
-  margin: 0 auto;
-  min-height: 80vh;
-  padding-top: 30px;
-  gap: 30px;
+    display: flex;
+    flex-direction: row;
+    margin: 0 auto;
+    min-height: 80vh;
+    padding-top: 30px;
+    gap: 30px;
 `;
 
 const SidebarWrapper = styled.div`
-  flex: 0 0 auto;
-  position: sticky;
-  top: 30px;
-  align-self: flex-start;
+    flex: 0 0 auto;
+    position: sticky;
+    top: 30px;
+    align-self: flex-start;
 `;
 
 const MainContent = styled.div`
-  flex: 1 1 0%;
-  padding: 25px;
-  display: flex;
-  flex-direction: column;
-  background-color: #1e1e1e;
-  border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    flex: 1 1 0%;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(30, 30, 30);
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 `;
 
 const Title = styled.h2`
-  color: #bb86fc;
-  text-align: center;
-  margin-bottom: 30px;
-  font-size: 2.2rem;
-  font-weight: 600;
-  position: relative;
-  padding-bottom: 15px;
+    color: rgb(187, 134, 252);
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2.2rem;
+    font-weight: 600;
+    position: relative;
+    padding-bottom: 15px;
 `;
 
 const CardGrid = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 25px;
-  justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+    justify-content: center;
 `;
 
 const CardWrapper = styled.div`
-  flex: 0 0 300px;
-  max-width: 400px;
-  min-width: 300px;
-  transition: transform 0.2s ease;
-  
-  &:hover {
+    flex: 0 0 300px;
+    max-width: 400px;
+    min-width: 300px;
+    transition: transform 0.2s ease;
+
+    &:hover {
     transform: translateY(-5px);
-  }
+    }
 `;
 
 const ToggleWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  margin-bottom: 30px;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 30px;
 `;
 
 const ViewToggleButton = styled.button<{ isActive: boolean }>`
-  padding: 8px 18px;
-  border: none;
-  border-radius: 8px;
-  background-color: ${props => props.isActive ? '#bb86fc' : 'rgba(255, 255, 255, 0.08)'};
-  color: ${props => props.isActive ? '#121212' : '#e0e0e0'};
-  cursor: pointer;
-  font-weight: 500;
-  transition: all 0.2s ease;
-  box-shadow: ${props => props.isActive ? '0 2px 4px rgba(0, 0, 0, 0.4)' : 'none'};
+    padding: 8px 18px;
+    border: none;
+    border-radius: 8px;
+    background-color: ${props => props.isActive ? 'rgb(187, 134, 252)' : 'rgba(255, 255, 255, 0.08)'};
+    color: ${props => props.isActive ? 'rgb(18, 18, 18)' : 'rgb(224, 224, 224)'};
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    box-shadow: ${props => props.isActive ? '0 2px 4px rgba(0, 0, 0, 0.4)' : 'none'};
 
-  &:hover {
-    background-color: ${props => props.isActive ? '#bb86fc' : 'rgba(255, 255, 255, 0.15)'};
-  }
+    &:hover {
+    background-color: ${props => props.isActive ? 'rgb(187, 134, 252)' : 'rgba(255, 255, 255, 0.15)'};
+    }
 
-  &:disabled {
+    &:disabled {
     opacity: 0.7;
-    cursor: default;
-  }
+    }
 `;
 
 const GraphWrapper = styled.div`
-  width: 100%;
-  max-width: 1500px;
-  margin: 0 auto;
-  padding: 40px 0;
-  background-color: rgba(255, 255, 255, 0.03);
-  border-radius: 8px;
+    width: 100%;
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 40px 0;
+    background-color: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
 `;
 
 const PaginationWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 30px;
-  gap: 10px;
-  align-items: center;
-  padding: 15px 0;
-  background-color: rgba(255, 255, 255, 0.03);
-  border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    gap: 10px;
+    align-items: center;
+    padding: 15px 0;
+    background-color: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
 `;
 
 const PageButton = styled.button<{ variant?: 'primary' | 'secondary' }>`
-  padding: 8px 14px;
-  border: none;
-  border-radius: 4px;
-  background-color: ${props => props.variant === 'primary' ? '#bb86fc' : 'rgba(255, 255, 255, 0.08)'};
-  color: ${props => props.variant === 'primary' ? '#121212' : '#e0e0e0'};
-  cursor: pointer;
-  font-weight: 500;
-  transition: all 0.2s ease;
+    padding: 8px 14px;
+    border: none;
+    border-radius: 4px;
+    background-color: ${props => props.variant === 'primary' ? 'rgb(187, 134, 252)' : 'rgba(255, 255, 255, 0.08)'};
+    color: ${props => props.variant === 'primary' ? 'rgb(18, 18, 18)' : 'rgb(224, 224, 224)'};
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
 
-  &:disabled {
+    &:disabled {
     opacity: 0.5;
-  }
+    }
 
-  &:hover{
-    background-color: ${props => props.variant === 'primary' ? '#bb86fc' : 'rgba(255, 255, 255, 0.15)'};
+    &:hover{
+    background-color: ${props => props.variant === 'primary' ? 'rgb(187, 134, 252)' : 'rgba(255, 255, 255, 0.15)'};
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-  }
+    }
 `;
 
 const PageInfo = styled.div`
-  font-size: 0.9rem;
-  color: #a0a0a0;
-  background-color: rgba(255, 255, 255, 0.05);
-  padding: 8px 15px;
-  border-radius: 4px;
-  margin-bottom: 20px;
-  text-align: center;
+    font-size: 0.9rem;
+    color: rgb(160, 160, 160);
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 8px 15px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    text-align: center;
 `;
 
 export default function ShootingListContent() {
-    const [shootings, setShootings] = useState<Shooting[]>([]);
-    const [viewMode, setViewMode] = useState<'card' | 'table' | 'graph'>('card');
+    const [shootings, setShootings] = useState<Shooting[]>([]); // stores API data
+    const [viewMode, setViewMode] = useState<'card' | 'table' | 'graph'>('card'); // useState hook to track view mode
     const [selectedFilters, setSelectedFilters] = useState({
         year: [] as string[],
         district: "",
@@ -154,12 +155,15 @@ export default function ShootingListContent() {
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10;
 
+    // useEffect hook that calls the API to fetch shooting data
     useEffect(() => {
         async function getShootings() {
             try {
                 const res = await fetch(`https://services.arcgis.com/sFnw0xNflSi8J0uh/arcgis/rest/services/Person_Shot_Tbl_view/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=json`);
                 const data = await res.json();
 
+                // The data is originally sorted in ascending order but this sorts it in descending order by date
+                // to show the most recent shootings first
                 const sortedData = [...data.features].sort((a, b) =>
                     b.attributes.Shooting_Date - a.attributes.Shooting_Date
                 );
@@ -173,6 +177,7 @@ export default function ShootingListContent() {
         getShootings();
     }, []);
 
+    // useEffect hook used to reset pagination when filters change
     useEffect(() => {
         setCurrentPage(1);
     }, [selectedFilters, viewMode]);
@@ -209,25 +214,26 @@ export default function ShootingListContent() {
 
     const visible = filterShootings(shootings);
 
-    const totalPages = Math.ceil(visible.length / itemsPerPage);
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = Math.min(startIndex + itemsPerPage, visible.length);
-    const currentItems = visible.slice(startIndex, endIndex);
+    // Pagination logic
+    const totalPages = Math.ceil(visible.length / itemsPerPage); // total number of pages
+    const startIndex = (currentPage - 1) * itemsPerPage; // start idx for current page
+    const endIndex = Math.min(startIndex + itemsPerPage, visible.length); // end idx for current page
+    const currentItems = visible.slice(startIndex, endIndex); // array of items for current page
 
     const handleNextPage = () => {
-        setCurrentPage(prev => Math.min(prev + 1, totalPages));
+        setCurrentPage(prev => Math.min(prev + 1, totalPages)); // ensure we don't go over total pages
     };
 
     const handlePrevPage = () => {
-        setCurrentPage(prev => Math.max(prev - 1, 1));
+        setCurrentPage(prev => Math.max(prev - 1, 1)); // ensure we don't go below 1
     };
 
     const handleFirstPage = () => {
-        setCurrentPage(1);
+        setCurrentPage(1); // reset to first page
     };
 
     const handleLastPage = () => {
-        setCurrentPage(totalPages);
+        setCurrentPage(totalPages); // go to last page
     };
 
     return (
@@ -242,6 +248,7 @@ export default function ShootingListContent() {
             <MainContent>
                 <Title>Boston Shooting Incidents</Title>
 
+                {/* navigation options - conditional rendering based on view mode */}
                 <ToggleWrapper>
                     <ViewToggleButton
                         onClick={() => setViewMode('card')}
@@ -263,12 +270,14 @@ export default function ShootingListContent() {
                     </ViewToggleButton>
                 </ToggleWrapper>
 
+                {/* the number of results showing in the page except for graph because graph doesn't have multiple pages */}
                 {viewMode !== 'graph' && visible.length > 0 && (
                     <PageInfo>
                         Showing {startIndex + 1}-{endIndex} of {visible.length} results
                     </PageInfo>
                 )}
 
+                {/* conditional rendering based on view mode */}
                 {viewMode === 'card' ? (
                     <CardGrid>
                         {currentItems.map(s => (
@@ -285,6 +294,7 @@ export default function ShootingListContent() {
                     </GraphWrapper>
                 )}
 
+                {/* controls for pagination again except for graph because graph view is just a single page */}
                 {viewMode !== 'graph' && totalPages > 1 && (
                     <PaginationWrapper>
                         <PageButton onClick={handleFirstPage} disabled={currentPage === 1}>

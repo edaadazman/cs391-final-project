@@ -27,7 +27,7 @@ const TH = styled.th`
   text-align: left;
   padding: 14px 12px;
   font-weight: 600;
-  color: #bb86fc;
+  color:rgb(187, 134, 252);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   font-size: 0.9rem;
   white-space: nowrap;
@@ -48,7 +48,7 @@ const TR = styled.tr<{ isFatal?: boolean }>`
 const TD = styled.td`
   padding: 12px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  color: #e0e0e0;
+  color:rgb(224, 224, 224);
   font-size: 0.9rem;
   white-space: nowrap;
   overflow: hidden;
@@ -60,9 +60,9 @@ const TypeTag = styled.span<{ isFatal: boolean }>`
   padding: 4px 8px;
   border-radius: 4px;
   background-color: ${props => props.isFatal
-    ? '#cf6679'
-    : '#03dac6'};
-  color: #121212;
+    ? 'rgb(207, 102, 121)'
+    : 'rgb(3, 218, 198)'};
+  color:rgb(18, 18, 18);
   font-size: 0.7rem;
   font-weight: 600;
 `;

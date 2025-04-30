@@ -1,7 +1,9 @@
+// This component was implemented by Edaad Azman
 import styled from 'styled-components';
 import { Shooting } from '../../types';
 
-const PreviewCard = styled.div<{ isFatal: boolean }>`
+// accepts isFatal prop to determine card color
+const PreviewCard = styled.div<{ isFatal: boolean }>` 
     border: none;
     border-radius: 12px;
     padding: 20px;
@@ -12,7 +14,7 @@ const PreviewCard = styled.div<{ isFatal: boolean }>`
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
-    color: #e0e0e0;
+    color: rgb(224, 224, 224);
     height: 320px;
     display: flex;
     flex-direction: column;
@@ -23,12 +25,11 @@ const PreviewCard = styled.div<{ isFatal: boolean }>`
 `;
 
 const IncidentTitle = styled.h3`
-    color: #e0e0e0;
+    color: rgb(224, 224, 224);
     margin-top: 0;
     padding-bottom: 12px;
     font-size: 1.2rem;
     font-weight: 600;
-    letter-spacing: 0.5px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 `;
 
@@ -42,7 +43,7 @@ const InfoSection = styled.div`
 const InfoItem = styled.div`
     margin: 0;
     strong {
-        color: #bb86fc;
+        color: rgb(187, 134, 252);
         font-weight: 500;
         margin-right: 5px;
     }
@@ -59,8 +60,8 @@ const CardFooter = styled.div`
 `;
 
 const MultiVictimTag = styled.div`
-    background-color: #cf6679;
-    color: #121212;
+    background-color: rgb(207, 102, 121);
+    color: rgb(18, 18, 18);
     padding: 4px 10px;
     border-radius: 4px;
     display: inline-block;
@@ -68,11 +69,12 @@ const MultiVictimTag = styled.div`
     font-size: 0.8rem;
 `;
 
+// accepts isFatal prop to tag element color
 const TypeTag = styled.div<{ isFatal: boolean }>`
     background-color: ${props => props.isFatal
-        ? '#cf6679'
-        : '#03dac6'};
-    color: #121212;
+        ? 'rgb(207, 102, 121)'
+        : 'rgb(3, 218, 198)'};
+    color: rgb(18, 18, 18);
     padding: 4px 8px;
     font-size: 0.8rem;
     font-weight: 600;
@@ -82,9 +84,10 @@ const TypeTag = styled.div<{ isFatal: boolean }>`
 `;
 
 interface ShootingPreviewProps {
-    shooting: Shooting;
+    shooting: Shooting; // single shooting incident data object
 }
 
+// Function that formats the data into readable date
 const formatDate = (timestamp: number) => {
     return new Date(timestamp).toLocaleDateString('en-US', {
         year: 'numeric',
@@ -94,10 +97,11 @@ const formatDate = (timestamp: number) => {
 };
 
 export default function ShootingPreview({ shooting }: ShootingPreviewProps) {
-    const isFatal = shooting.attributes.Shooting_Type_V2 === "Fatal";
+    const isFatal = shooting.attributes.Shooting_Type_V2 === "Fatal"; // for conditional styling
     const attrs = shooting.attributes;
 
     return (
+        // Structures the card in title, info section, and footer
         <PreviewCard isFatal={isFatal}>
             <IncidentTitle>Incident #{attrs.Incident_Num}</IncidentTitle>
             <InfoSection>
@@ -108,10 +112,11 @@ export default function ShootingPreview({ shooting }: ShootingPreviewProps) {
                 <InfoItem><strong>Victim:</strong> {attrs.Victim_Gender}, {attrs.Victim_Race}</InfoItem>
             </InfoSection>
             <CardFooter>
+                {/* conditional rendering for multiple victims and fatal / non-fatal tag */}
                 {attrs.Multi_Victim === 1 ? (
                     <MultiVictimTag>Multiple Victims</MultiVictimTag>
                 ) : (
-                    <div></div>
+                    <div></div> // empty div tag to maintain layout
                 )}
                 <TypeTag isFatal={isFatal}>
                     {attrs.Shooting_Type_V2}
