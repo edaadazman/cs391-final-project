@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { Shooting } from '../../types';
 
+// Props interface: array of Shooting objects
 interface ShootingTableProps {
   shootings: Shooting[];
 }
@@ -67,16 +68,20 @@ const TypeTag = styled.span<{ isFatal: boolean }>`
   font-weight: 600;
 `;
 
+// Helper to format timestamp into locale date string
 const formatDate = (timestamp: number) => {
   return new Date(timestamp).toLocaleDateString();
 };
 
+// Main table component: renders the styled table with all props
 export default function ShootingTable({ shootings }: ShootingTableProps) {
+
   return (
     <TableWrapper>
       <Table>
         <THead>
           <TR>
+            {/* Column headers */}
             <TH style={{ width: '12%' }}>Incident #</TH>
             <TH style={{ width: '12%' }}>Date</TH>
             <TH style={{ width: '10%' }}>Type</TH>
@@ -89,6 +94,7 @@ export default function ShootingTable({ shootings }: ShootingTableProps) {
           </TR>
         </THead>
         <tbody>
+          {/* Maps through each incident's attributes */}
           {shootings.map(s => {
             const a = s.attributes;
             const isFatal = a.Shooting_Type_V2 === "Fatal";
