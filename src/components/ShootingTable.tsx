@@ -8,17 +8,17 @@ interface ShootingTableProps {
 }
 
 const TableWrapper = styled.div`
-  margin-top: 20px;
-  border-radius: 8px;
+  margin-top: 1.25rem;
+  border-radius: 0.5rem;
   background-color: rgba(255, 255, 255, 0.03);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.4);
   width: 100%;
-  max-width: 100%; 
+  max-width: 100%;
 `;
 
 const Table = styled.table`
   width: 100%;
-  table-layout: fixed; 
+  table-layout: fixed;
 `;
 
 const THead = styled.thead`
@@ -27,10 +27,10 @@ const THead = styled.thead`
 
 const TH = styled.th`
   text-align: left;
-  padding: 14px 12px;
+  padding: 0.875rem 0.75rem;
   font-weight: 600;
-  color:rgb(187, 134, 252);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgb(187, 134, 252);
+  border-bottom: 0.0625rem solid rgba(255, 255, 255, 0.1);
   font-size: 0.9rem;
   white-space: nowrap;
   overflow: hidden;
@@ -48,23 +48,23 @@ const TR = styled.tr<{ isFatal?: boolean }>`
 `;
 
 const TD = styled.td`
-  padding: 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  color:rgb(224, 224, 224);
+  padding: 0.75rem;
+  border-bottom: 0.0625rem solid rgba(255, 255, 255, 0.05);
+  color: rgb(224, 224, 224);
   font-size: 0.9rem;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis; 
+  text-overflow: ellipsis;
 `;
 
 const TypeTag = styled.span<{ isFatal: boolean }>`
   display: inline-block;
-  padding: 4px 8px;
-  border-radius: 4px;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
   background-color: ${props => props.isFatal
     ? 'rgb(207, 102, 121)'
     : 'rgb(3, 218, 198)'};
-  color:rgb(18, 18, 18);
+  color: rgb(18, 18, 18);
   font-size: 0.7rem;
   font-weight: 600;
 `;
@@ -76,7 +76,6 @@ const formatDate = (timestamp: number) => {
 
 // Main table component: renders the styled table with all props
 export default function ShootingTable({ shootings }: ShootingTableProps) {
-
   return (
     <TableWrapper>
       <Table>
